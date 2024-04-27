@@ -1,0 +1,61 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com\\fwlink\\?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "rv32@qemu",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "zig-out\\bin\\riscv32.elf",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "miDebuggerServerAddress": "localhost:1234",
+            "serverLaunchTimeout": 2000,
+            "targetArchitecture": "arm",
+            "setupCommands": [
+                {
+                    "text": "cd ${workspaceRoot}"
+                },
+                {
+                    "text": "shell src\\riscv32\\qemu-dbg.bat"
+                }
+            ],
+            "MIMode": "gdb",
+            "miDebuggerPath": "D:\\Progrem\\riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32\\bin\\riscv64-unknown-elf-gdb.exe",
+            "customLaunchSetupCommands": [],
+            "launchCompleteCommand": "exec-run",
+        },
+        {
+            "name": "f407@qemu",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "zig-out\\bin\\stm32f4.elf",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "miDebuggerServerAddress": "localhost:1234",
+            "serverLaunchTimeout": 2000,
+            "targetArchitecture": "ARM",
+            "setupCommands": [
+                {
+                    "text": "cd ${workspaceRoot}"
+                },
+                {
+                    "text": "shell src\\stm32f4\\qemu-dbg.bat"
+                }
+            ],
+            "MIMode": "gdb",
+            "miDebuggerPath": "D:\\RT-ThreadStudio\\repo\\Extract\\ToolChain_Support_Packages\\ARM\\GNU_Tools_for_ARM_Embedded_Processors\\5.4.1\\bin\\arm-none-eabi-gdb.exe",
+            "customLaunchSetupCommands": [],
+            "launchCompleteCommand": "exec-run",
+        },
+
+    ]
+}
