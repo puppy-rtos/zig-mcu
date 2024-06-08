@@ -24,13 +24,13 @@ pub fn build(b: *std.Build) void {
     for (available_boards) |board| {
         const elf = b.addExecutable(.{
             .name = b.fmt("{s}{s}", .{ board.name, ".elf" }),
-            .root_source_file = .{ .path = "src/main.zig" },
+            .root_source_file = b.path("src/main.zig"),
             .target = b.resolveTargetQuery(board.target),
             .optimize = optimize,
         });
 
-        elf.setLinkerScript(.{ .path = board.linker_script });
-        elf.addCSourceFile(.{ .file = .{ .path = board.start_file }, .flags = &.{} });
+        elf.setLinkerScript(b.path(board.linker_script));
+        elf.addCSourceFile(.{ .file = b.path(board.start_file), .flags = &.{} });
 
         // Copy the elf to the output directory.
         const copy_elf = b.addInstallArtifact(elf, .{});
