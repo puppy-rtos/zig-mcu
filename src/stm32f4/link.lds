@@ -5,7 +5,6 @@ MEMORY
 }
 ENTRY( _start )
 _system_stack_size = 0x400;
-_system_heap_size  = 0x2000;
 
 SECTIONS
 {
@@ -64,28 +63,16 @@ SECTIONS
         _edata = . ;
     } >RAM
 
-    .stack : 
+    __bss_start = .;
+    __bss_start__ = .;
+    .bss :
     {
         . = ALIGN(4);
         _sstack = .;
         . = . + _system_stack_size;
         . = ALIGN(4);
         _estack = .;
-    } >RAM
-    .heap :
-    {
-        . = ALIGN(4);
-        __HEAP_START = .;
-        . = . + _system_heap_size;
-        __HEAP_MAX = .;
-        end = __HEAP_MAX;
-        PROVIDE(end = .);
-    } > RAM
 
-    __bss_start = .;
-    __bss_start__ = .;
-    .bss :
-    {
         . = ALIGN(4);
         /* This is used by the startup in order to initialize the .bss secion */
         _sbss = .;

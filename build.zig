@@ -2,9 +2,9 @@ const std = @import("std");
 
 const stm32f4 = std.zig.CrossTarget{
     .cpu_arch = .thumb,
-    .cpu_model = .{ .explicit = &std.Target.arm.cpu.cortex_m3 },
+    .cpu_model = .{ .explicit = &std.Target.arm.cpu.cortex_m4 },
     .os_tag = .freestanding,
-    .abi = .eabi,
+    .abi = .eabihf,
 };
 
 const riscv32 = std.zig.CrossTarget{
@@ -19,7 +19,7 @@ const available_boards = [_]Board{
 };
 
 pub fn build(b: *std.Build) void {
-    const optimize = .Debug;
+    const optimize = .ReleaseSmall;
 
     for (available_boards) |board| {
         const elf = b.addExecutable(.{
@@ -27,6 +27,7 @@ pub fn build(b: *std.Build) void {
             .root_source_file = b.path("src/main.zig"),
             .target = b.resolveTargetQuery(board.target),
             .optimize = optimize,
+            .strip = false, // do not strip debug symbols
         });
 
         elf.setLinkerScript(b.path(board.linker_script));
