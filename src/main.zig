@@ -1,15 +1,12 @@
 const std = @import("std");
-
-pub fn add(a: u8, b: u8) u8 {
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    return a + b;
-}
+const gpio = @import("stm32f4/gpio.zig");
 
 export fn main() void {
     // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    const c = add(10, 11);
+    const led = gpio.Gpio("PC13") catch return;
 
-    _ = c;
+    led.mode(gpio.Gpio_Mode.Output);
+    led.write(gpio.Gpio_Level.Low);
     while (true) {}
 }
 
