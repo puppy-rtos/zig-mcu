@@ -32,19 +32,6 @@
 .global  g_pfnVectors
 .global  Default_Handler
 
-/* start address for the initialization values of the .data section. 
-defined in linker script */
-.word  _sidata
-/* start address for the .data section. defined in linker script */  
-.word  _sdata
-/* end address for the .data section. defined in linker script */
-.word  _edata
-/* start address for the .bss section. defined in linker script */
-.word  _sbss
-/* end address for the .bss section. defined in linker script */
-.word  _ebss
-/* stack used for SystemInit_ExtMemCtl; always internal RAM used */
-
 /**
  * @brief  This is the code that gets called when the processor first
  *          starts execution following a reset event. Only the absolutely
@@ -61,9 +48,9 @@ _start:
   ldr   sp, =_estack     /* set stack pointer */
 
 /* Copy the data segment initializers from flash to SRAM */  
-  ldr r0, =_sdata
-  ldr r1, =_edata
-  ldr r2, =_sidata
+  ldr r0, =microzig_data_start
+  ldr r1, =microzig_data_end
+  ldr r2, =microzig_data_load_start
   movs r3, #0
   b LoopCopyDataInit
 
@@ -78,8 +65,8 @@ LoopCopyDataInit:
   bcc CopyDataInit
   
 /* Zero fill the bss segment. */
-  ldr r2, =_sbss
-  ldr r4, =_ebss
+  ldr r2, =microzig_bss_start
+  ldr r4, =microzig_bss_end
   movs r3, #0
   b LoopFillZerobss
 
@@ -91,12 +78,9 @@ LoopFillZerobss:
   cmp r2, r4
   bcc FillZerobss
 
-/* Call the clock system initialization function.*/
-//  bl  SystemInit   
-/* Call static constructors */
 /* Call the application's entry point.*/
   bl  main
-  bx  lr    
+  bx  lr
 .size  _start, .-_start
 
 /**
