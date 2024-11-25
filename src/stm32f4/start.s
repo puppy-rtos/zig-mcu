@@ -45,7 +45,7 @@
   .weak  _start
   .type  _start, %function
 _start:  
-  ldr   sp, =_estack     /* set stack pointer */
+  ldr   sp, =microzig_stack_end     /* set stack pointer */
 
 /* Copy the data segment initializers from flash to SRAM */  
   ldr r0, =microzig_data_start
@@ -108,7 +108,7 @@ Infinite_Loop:
     
     
 g_pfnVectors:
-  .word  _estack
+  .word  microzig_stack_end
   .word  _start
   .word  NMI_Handler
   .word  HardFault_Handler

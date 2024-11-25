@@ -2,9 +2,9 @@ const std = @import("std");
 const gpio = @import("stm32f4/gpio.zig");
 const clock = @import("stm32f4/clock.zig");
 
-export fn main() void {
+export fn main() noreturn {
     // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    const led = gpio.Gpio("PC13") catch return;
+    const led = gpio.Gpio("PC13") catch unreachable;
     clock.clock_init();
 
     led.mode(gpio.Gpio_Mode.Output);
@@ -17,7 +17,7 @@ export fn main() void {
     }
 }
 
-export fn subcpu_entry() void {
+export fn subcpu_entry() noreturn {
     // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
     while (true) {}
 }

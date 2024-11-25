@@ -39,11 +39,11 @@ SECTIONS
       microzig_bss_start = .;
       *(.bss*)
       microzig_bss_end = .;
-    . = ALIGN(4);
-    _sstack = .;
-    . = . + 0x800;
-    . = ALIGN(4);
-    _estack = .;
+      . = ALIGN(4);
+      microzig_stack_start = .;
+      . = . + 0x800;
+      . = ALIGN(4);
+      microzig_stack_end = .;
   } > ram0
 
   microzig_data_load_start = LOADADDR(.data);
