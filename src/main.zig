@@ -2,7 +2,7 @@ const std = @import("std");
 const gpio = @import("stm32f4/gpio.zig");
 const clock = @import("stm32f4/clock.zig");
 
-export fn main() noreturn {
+pub fn main() noreturn {
     // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
     const led = gpio.Gpio("PC13") catch unreachable;
     clock.clock_init();
@@ -15,9 +15,4 @@ export fn main() noreturn {
         led.write(gpio.Gpio_Level.High);
         clock.delay_ms(1000);
     }
-}
-
-export fn subcpu_entry() noreturn {
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    while (true) {}
 }

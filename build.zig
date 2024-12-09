@@ -14,7 +14,7 @@ const riscv32 = std.zig.CrossTarget{
 };
 
 const available_boards = [_]Board{
-    .{ .name = "riscv32", .target = riscv32, .start_file = "src/riscv32/start.s", .linker_script = "src/riscv32/link.lds" },
+    // .{ .name = "riscv32", .target = riscv32, .start_file = "src/riscv32/start.s", .linker_script = "src/riscv32/link.lds" },
     .{ .name = "stm32f4", .target = stm32f4, .start_file = "src/stm32f4/start.s", .linker_script = "src/stm32f4/link.lds" },
 };
 
@@ -24,14 +24,15 @@ pub fn build(b: *std.Build) void {
     for (available_boards) |board| {
         const elf = b.addExecutable(.{
             .name = b.fmt("{s}{s}", .{ board.name, ".elf" }),
-            .root_source_file = b.path("src/main.zig"),
+            .root_source_file = b.path("src/start.zig"),
             .target = b.resolveTargetQuery(board.target),
             .optimize = optimize,
             .strip = false, // do not strip debug symbols
+            // .pic = true,
         });
 
         elf.setLinkerScript(b.path(board.linker_script));
-        elf.addCSourceFile(.{ .file = b.path(board.start_file), .flags = &.{} });
+        // elf.addCSourceFile(.{ .file = b.path(board.start_file), .flags = &.{} });
 
         // Copy the elf to the output directory.
         const copy_elf = b.addInstallArtifact(elf, .{});
