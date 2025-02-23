@@ -24,6 +24,10 @@ SECTIONS
         *(.gnu.linkonce.t*)
 
         . = ALIGN(4);
+        /* Place the build ID in the .text section */
+        *(.note.gnu.build-id)
+
+        . = ALIGN(4);
 
         PROVIDE(__ctors_start__ = .);
         KEEP (*(SORT(.init_array.*)))

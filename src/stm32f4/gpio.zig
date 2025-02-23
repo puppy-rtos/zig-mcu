@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const devicetree = @import("devicetree_f4.zig");
+
 pub const Gpio_Mode = enum { Input, Output };
 pub const Gpio_Level = enum { Low, High };
 
@@ -88,13 +90,13 @@ const ops: GpioOps = .{
 fn init(name: []const u8) !GpioType {
     // parse name
     const port_num = name[1] - 'A';
-    const port_addr: u32 = 0x40020000 + 0x400 * @as(u32, port_num);
+    const port_addr: u32 = devicetree.gpio_addr + 0x400 * @as(u32, port_num);
     const pin_num: u32 = try parseU32(name[2..]);
 
     var self: GpioType = .{ .data = .{ .port = @as(*volatile GPIO_Type, @ptrFromInt(port_addr)), .pin = @intCast(pin_num) }, .ops = &ops };
 
     // Enable GPIOX(A..) port
-    const RCC = @as(*volatile RCC_Type, @ptrFromInt(0x40023800));
+    const RCC = @as(*volatile RCC_Type, @ptrFromInt(devicetree.rcc_addr));
     var ahb1enr_raw = RCC.AHB1ENR;
     ahb1enr_raw = ahb1enr_raw | std.math.shl(u32, 1, port_num);
     RCC.AHB1ENR = ahb1enr_raw;
