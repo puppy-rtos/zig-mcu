@@ -1,13 +1,13 @@
 const std = @import("std");
 
-const stm32f4 = std.zig.CrossTarget{
+const stm32f4 = std.Target.Query{
     .cpu_arch = .thumb,
     .cpu_model = .{ .explicit = &std.Target.arm.cpu.cortex_m4 },
     .os_tag = .freestanding,
     .abi = .eabihf,
 };
 
-const riscv32 = std.zig.CrossTarget{
+const riscv32 = std.Target.Query{
     .cpu_arch = .riscv32,
     .os_tag = .freestanding,
     .abi = .none,
@@ -61,7 +61,7 @@ pub fn build(b: *std.Build) void {
 }
 
 const Board = struct {
-    target: std.zig.CrossTarget,
+    target: std.Target.Query,
     name: []const u8,
     start_file: []const u8,
     linker_script: []const u8,
